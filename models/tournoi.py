@@ -1,11 +1,6 @@
-from tour import Tour
-from match import Match
-from joueur import Joueur
-import json
+from models.tour import Tour
+from models.match import Match
 from random import shuffle
-
-
-PATH_TO_JSON = "data/tournaments/tournoi.json"
 
 
 class Tournoi:
@@ -43,12 +38,3 @@ class Tournoi:
                               reverse=True)
         for joueur in self.joueurs:
             print(joueur.prenom, joueur.points)
-
-
-with open(PATH_TO_JSON, 'r', encoding='utf-8') as json_tournoi:
-    donnees_json = json.load(json_tournoi)
-
-joueurs = [Joueur(joueur) for joueur in donnees_json["joueurs"]]
-print([joueur.prenom for joueur in joueurs])
-tournoi1 = Tournoi(joueurs)
-tournoi1.run()
