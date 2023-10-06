@@ -13,18 +13,12 @@ class Tournoi:
     def run(self):
         for i in range(self.nombre_tours):
             self.tour_actuel = str(i + 1)
-            if self.tour_actuel == '1':
-                shuffle(self.joueurs)
-            else:
-                self.trier_par_score()
+            self.trier_par_score()
             paires_joueurs = self.associer_joueurs()
-            print("\n")
             matchs = [Match(paire).play() for paire in paires_joueurs]
             tour = Tour(matchs, "Round " + self.tour_actuel)
             self.tours.append(tour)
-            print("\n")
-        for joueur in self.joueurs:
-            print(joueur.prenom, joueur.points)
+        self.trier_par_score()
 
     def associer_joueurs(self):
         paires_joueurs = []
@@ -33,8 +27,11 @@ class Tournoi:
         return paires_joueurs
 
     def trier_par_score(self):
-        self.joueurs = sorted(self.joueurs,
-                              key=lambda joueur: joueur.points,
-                              reverse=True)
+        if self.tour_actuel == '1':
+            shuffle(self.joueurs)
+        else:
+            self.joueurs = sorted(self.joueurs,
+                                  key=lambda joueur: joueur.points,
+                                  reverse=True)
         for joueur in self.joueurs:
             print(joueur.prenom, joueur.points)
