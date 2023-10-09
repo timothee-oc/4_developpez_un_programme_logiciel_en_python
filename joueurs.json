@@ -1,0 +1,32 @@
+[
+    {
+        "nom": "Martin",
+        "prenom": "Marie",
+        "naissance": "01/01/2001"
+    },
+    {
+        "nom": "Bernard",
+        "prenom": "Jean",
+        "naissance": "02/02/2002"
+    },
+    {
+        "nom": "Thomas",
+        "prenom": "Jeanne",
+        "naissance": "03/03/2003"
+    },
+    {
+        "nom": "Petit",
+        "prenom": "Pierre",
+        "naissance": "04/04/2004"
+    },
+    {
+        "nom": "Robert",
+        "prenom": "Françoise",
+        "naissance": "05/05/2005"
+    },
+    {
+        "nom": "Richard",
+        "prenom": "Michel",
+        "naissance": "06/06/2006"
+    }
+]
