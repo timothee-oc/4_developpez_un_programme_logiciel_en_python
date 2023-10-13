@@ -14,7 +14,7 @@ class Round:
         return str(self.matchs)
 
     def run(self):
-        pairs = self.generate_pairs(self.players)
+        pairs = self.generate_pairs(self.players.copy())
         for pair in pairs:
             match = Match(pair)
             match.run()

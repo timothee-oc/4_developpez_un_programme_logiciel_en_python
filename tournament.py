@@ -18,7 +18,7 @@ class Tournament:
         shuffle(self.players)
         for i in range(self.number_of_rounds):
             round_name = f"Round {str(self.current_round)}"
-            round = Round(round_name, self.players.copy())
+            round = Round(round_name, self.players)
             round.run()
             self.rounds.append(round)
             self.current_round += 1
