@@ -7,8 +7,11 @@ class Player:
         self.points = 0
         self.players_met = set()
 
-    def __repr__(self) -> str:
+    def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+    def __repr__(self):
+        return str(self)    
 
     def add_points(self, score):
         self.points += score
