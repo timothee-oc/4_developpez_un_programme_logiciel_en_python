@@ -66,6 +66,7 @@ class Controller:
             tournament.next_round()
             tournament.players = self.sort_by_points(tournament.players)
             self.view.display_ranking(tournament.players)
+        self.save_data(tournament.serialize(), "tournaments", tournament.name)
 
     def run_round(self, round, players):
         pairs = self.generate_pairs(players.copy())
@@ -128,19 +129,13 @@ class Controller:
     def run_match(self, match):
         winner = self.random_winner(match)
         match.set_scores(winner)
-        self.update_players_points(match)
-        self.players_have_met(match)
+        match.player1.add_points(match.score1)
+        match.player2.add_points(match.score2)
+        match.player1.add_met(match.player2)
+        match.player2.add_met(match.player1)
         
     def random_winner(self, match):
         return choice([match.player1, match.player2, None])
-    
-    def update_players_points(self, match):
-        match.player1.add_points(match.score1)
-        match.player2.add_points(match.score2)
-
-    def players_have_met(self, match):
-        match.player1.add_met(match.player2)
-        match.player2.add_met(match.player1)
 
     def save_data(self, data, data_dir, file_name):
         file_path = f"data/{data_dir}/{file_name}.json"

@@ -20,3 +20,12 @@ class Player:
 
     def add_met(self, player):
         self.players_met.add(player)
+
+    def serialize(self):
+        return {
+            "first_name": self.first_name,
+            "last_name": self.last_name,
+            "date_of_birth": self.date_of_birth,
+            "player_id": self.player_id,
+            "points": self.points
+        }

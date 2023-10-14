@@ -16,3 +16,11 @@ class Round:
     
     def store_match(self, match):
         self.matchs.append(match)
+
+    def serialize(self):
+        return {
+            "name": self.name,
+            "date_time_start": self.date_time_start,
+            "date_time_end": self.date_time_end,
+            "matchs": [match.serialize() for match in self.matchs]
+        }

@@ -27,3 +27,16 @@ class Tournament:
 
     def next_round(self):
         self.current_round += 1
+
+    def serialize(self):
+        return {
+            "name": self.name,
+            "place": self.place,
+            "description": self.description,
+            "start_date": self.start_date,
+            "end_date": self.end_date,
+            "number_of_rounds": self.number_of_rounds,
+            "current_round": self.current_round,
+            "players": [player.serialize() for player in self.players],
+            "rounds": [round.serialize() for round in self.rounds]
+        }

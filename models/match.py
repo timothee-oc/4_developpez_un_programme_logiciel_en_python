@@ -6,7 +6,7 @@ class Match:
         self.score2 = 0
 
     def __str__(self):
-        return f"([{self.player1}, {self.score1}], [{self.player2}, {self.score2}])"
+        return f"{self.player1} {self.score1} - {self.score2} {self.player2}"
 
     def __repr__(self):
         return str(self)
@@ -19,3 +19,8 @@ class Match:
         else:
             self.score1 = self.score2 = 0.5
 
+    def serialize(self):
+        return (
+            [self.player1.serialize(), self.score1],
+            [self.player2.serialize(), self.score2]
+        )
