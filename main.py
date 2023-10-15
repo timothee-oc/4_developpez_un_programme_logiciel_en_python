@@ -1,11 +1,11 @@
-from controllers.controller import Controller
-from views.view import View
+from controllers.maincontroller import MainController
+from views.mainview import MainView
 
 
 def main():
-    view = View()
-    controller = Controller(view)
-    controller.run()
+    main_view = MainView()
+    main_controller = MainController(main_view)
+    main_controller.run()
 
 
 if __name__ == '__main__':

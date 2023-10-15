@@ -28,6 +28,14 @@ class Tournament:
     def next_round(self):
         self.current_round += 1
 
+    def sort_by_points(self):
+        self.players = sorted(self.players, key=lambda p: p.points, reverse=True)
+
+    def reset_players_pairs(self, pairs):
+        for p1, p2 in pairs:
+            self.players.append(p1)
+            self.players.append(p2)
+
     def serialize(self):
         return {
             "name": self.name,
