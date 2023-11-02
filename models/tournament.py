@@ -1,50 +1,60 @@
-class Tournament:
-    def __init__(self, name, place, number_of_rounds=4):
+from models.player import PlayerModel
+from models.round import RoundModel
+
+class TournamentModel:
+    def __init__(self, name, place, start_date, end_date,
+                 number_rounds=4, current_round=1, rounds=[],
+                 players=[], description=[]):
         self.name = name
         self.place = place
-        self.start_date = None
-        self.end_date = None
-        self.number_of_rounds = number_of_rounds
-        self.current_round = 1
-        self.rounds = []
-        self.players = []
-        self.description = ""
+        self.start_date = start_date
+        self.end_date = end_date
+        self.number_rounds = number_rounds
+        self.current_round = current_round
+        self.rounds = rounds
+        self.players = players
+        self.description = description
 
     def __str__(self):
-        output = ""
-        for round in self.rounds:
-            output += f"{round}\n"
-        return output
-
-    def __repr__(self):
-        return str(self)
-
-    def register_player(self, player):
-        self.players.append(player)
-
-    def store_round(self, round):
-        self.rounds.append(round)
-
-    def next_round(self):
-        self.current_round += 1
-
+        return (
+            f"{self.name}\n"
+            f"Lieu: {self.place}\n"
+            f"Du {self.start_date} au {self.end_date}\n"
+        )
+    
     def sort_by_points(self):
-        self.players = sorted(self.players, key=lambda p: p.points, reverse=True)
+        self.players = sorted(
+            self.players, key=lambda p: p.points, reverse=True
+        )
 
-    def reset_players_pairs(self, pairs):
-        for p1, p2 in pairs:
-            self.players.append(p1)
-            self.players.append(p2)
-
+    def reset_players(self, round):
+        for match in round.matchs:
+            self.players.append(match.p1)
+            self.players.append(match.p2)
+    
     def serialize(self):
         return {
             "name": self.name,
             "place": self.place,
-            "description": self.description,
             "start_date": self.start_date,
             "end_date": self.end_date,
-            "number_of_rounds": self.number_of_rounds,
+            "number_rounds": self.number_rounds,
             "current_round": self.current_round,
+            "rounds": [round.serialize() for round in self.rounds],
             "players": [player.serialize() for player in self.players],
-            "rounds": [round.serialize() for round in self.rounds]
+            "description": self.description
         }
+    
+    @classmethod
+    def deserialize(cls, data: dict) -> 'TournamentModel':
+        return TournamentModel(
+            name=data["name"],
+            place=data["place"],
+            start_date=data["start_date"],
+            end_date=data["end_date"],
+            number_rounds=data["number_rounds"],
+            current_round=data["current_round"],
+            rounds=[RoundModel.deserialize(round_data) for round_data in data["rounds"]],
+            players=[PlayerModel.deserialize(player_data) for player_data in data["players"]],
+            description=data["description"]
+        )

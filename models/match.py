@@ -1,26 +1,37 @@
-class Match:
-    def __init__(self, players):
-        self.player1 = players[0]
-        self.player2 = players[1]
-        self.score1 = 0
-        self.score2 = 0
+from models.player import PlayerModel
+from random import choice
 
-    def __str__(self):
-        return f"{self.player1} {self.score1} - {self.score2} {self.player2}"
+class MatchModel:
+    def __init__(self, pair):
+        self.p1 = pair[0][0]
+        self.p2 = pair[1][0]
+        self.s1 = pair[0][1]
+        self.s2 = pair[1][1]
 
-    def __repr__(self):
-        return str(self)
+    def random_winner(self):
+        possible_outcomes = ['0', '1', '2']
+        winner = choice(possible_outcomes)
+        return winner
     
     def set_scores(self, winner):
-        if winner == self.player1:
-            self.score1 = 1
-        elif winner == self.player2:
-            self.score2 = 1
+        if winner == '1':
+            self.s1 = 1
+        elif winner == '2':
+            self.s2 = 1
         else:
-            self.score1 = self.score2 = 0.5
+            self.s1 = self.s2 = 0.5
 
     def serialize(self):
         return (
-            [self.player1.serialize(), self.score1],
-            [self.player2.serialize(), self.score2]
+            [self.p1.serialize(), self.s1],
+            [self.p2.serialize(), self.s2]
+        )
+    
+    @classmethod
+    def deserialize(cls, pair) -> 'MatchModel':
+        return cls(
+            pair=(
+                [PlayerModel.deserialize(pair[0][0]), pair[0][1]],
+                [PlayerModel.deserialize(pair[1][0]), pair[1][1]]
+            )
         )

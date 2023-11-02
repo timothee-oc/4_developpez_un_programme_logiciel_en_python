@@ -1,12 +1,12 @@
-from controllers.maincontroller import MainController
-from views.mainview import MainView
-
+from controllers.menu import MenuController
+from views.menu import MenuView
+from utils import create_data_dirs
 
 def main():
-    main_view = MainView()
-    main_controller = MainController(main_view)
-    main_controller.run()
+    menu_controller = MenuController(view=MenuView())
+    menu_controller.process_choice()
 
 
 if __name__ == '__main__':
+    create_data_dirs()
     main()
