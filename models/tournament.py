@@ -22,16 +22,6 @@ class TournamentModel:
             f"Du {self.start_date} au {self.end_date}\n"
         )
     
-    def sort_by_points(self):
-        self.players = sorted(
-            self.players, key=lambda p: p.points, reverse=True
-        )
-
-    def reset_players(self, round):
-        for match in round.matchs:
-            self.players.append(match.p1)
-            self.players.append(match.p2)
-    
     def serialize(self):
         return {
             "name": self.name,

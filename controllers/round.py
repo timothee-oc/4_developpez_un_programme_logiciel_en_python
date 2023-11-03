@@ -1,66 +1,61 @@
 from models.round import RoundModel
-from models.match import MatchModel
-from random import choice, shuffle
+from controllers.match import MatchController
+from views.match import MatchView
+from random import choice
 
 class RoundController:
-    def __init__(self, view):
+    def __init__(self, previous_rounds, view):
         self.view = view
+        self.previous_rounds = previous_rounds
 
-    def create_round(self, tournament):
-        round_name = f"Round {tournament.current_round}"
+    def create_round(self, current_round):
+        round_name = f"Round {current_round}"
         round = RoundModel(round_name)
-        if tournament.current_round == 1:
-            shuffle(tournament.players)
-        else:
-            tournament.sort_by_points()
         return round
     
-    def pair_players(self, tournament):
+    def pair_players(self, players):
         pairs = []
-        while len(tournament.players) >= 2:
-            p1 = tournament.players.pop(0)
-            p2 = self.find_p2(p1, tournament)
-            pair = (p1, p2)
-            pairs.append(pair)
+        while len(players) >= 2:
+            p1 = players.pop(0)
+            p2 = self.find_p2(p1, players)
+            pairs.append((p1, p2))
         return pairs
     
-    def find_p2(self, p1, tournament):
-        if len(tournament.players) > 1:
-            if tournament.players[0].points == tournament.players[1].points:
-                reference = tournament.players[0].points
-                candidates = self.find_candidates(p1, tournament.players, reference)
+    def find_p2(self, p1, players):
+        if len(players) > 1:
+            if players[0].points == players[1].points:
+                candidates = self.find_candidates(p1, players)
                 if len(candidates) > 0:
                     chosen = choice(candidates)
-                    chosen_index = tournament.players.index(chosen)
-                    return tournament.players.pop(chosen_index)
-        return tournament.players.pop(0)
+                    chosen_index = players.index(chosen)
+                    return players.pop(chosen_index)
+        return players.pop(0)
 
-    def find_candidates(self, p1, others, reference, tournament):
+    def find_candidates(self, p1, players):
+        reference = players[0].points
         candidates = []
-        for player in others:
+        for player in players:
             if player.points != reference:
                 break
-            elif self.check_already_met(p1, player, tournament):
+            elif self.check_already_met(p1, player):
                 continue
             else:
                 candidates.append(player)
         return candidates
     
-    def check_already_met(self, p1, candidate, tournament):
-        for round in tournament.rounds:
+    def check_already_met(self, p1, candidate):
+        for round in self.previous_rounds:
             for match in round.matchs:
                 if (match.p1, match.p2) in [(p1, candidate), (candidate, p1)]:
                     return True
         return False
     
-    def run_round(self, pairs):
+    def run_round(self, pairs, round):
         matchs = []
+        match_controller = MatchController(view=MatchView())
+        self.view.display_round_number(round)
         for pair in pairs:
-            match = MatchModel(([pair[0], 0], [pair[1], 0]))
-            # winner = self.view.input_winner(match)
-            winner = match.random_winner() # JUSTE POUR TESTER
-            match.set_scores(winner)
-            match.p1.points += match.s1
-            match.p2.points += match.s2
+            match = match_controller.create_match(pair)
+            match_controller.run_match(match)
             matchs.append(match)
         return matchs

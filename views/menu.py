@@ -3,7 +3,7 @@ class MenuView:
         choice = input(
             "\n[MENU PRINCIPAL]\n"
             " 1. Gestion des tournois\n"
-            " 2. Gestion des joueurs\n"
+            " 2. Créer un joueur\n"
             " 3. Gestion des rapports\n"
             " 4. Quitter\n"
             " => "
@@ -16,17 +16,6 @@ class MenuView:
             "\n[MENU TOURNOI]\n"
             " 1. Créer un tournoi\n"
             " 2. (Re)Lancer un tournoi\n"
-            " 3. Retour\n"
-            " => "
-        )
-        print()
-        return choice
-    
-    def choice_player(self):
-        choice = input(
-            "\n[MENU JOUEUR]\n"
-            " 1. Créer un joueur\n"
-            " 2. Chercher un joueur\n"
             " 3. Retour\n"
             " => "
         )

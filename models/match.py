@@ -1,5 +1,4 @@
 from models.player import PlayerModel
-from random import choice
 
 class MatchModel:
     def __init__(self, pair):
@@ -8,18 +7,12 @@ class MatchModel:
         self.s1 = pair[0][1]
         self.s2 = pair[1][1]
 
-    def random_winner(self):
-        possible_outcomes = ['0', '1', '2']
-        winner = choice(possible_outcomes)
-        return winner
-    
-    def set_scores(self, winner):
-        if winner == '1':
-            self.s1 = 1
-        elif winner == '2':
-            self.s2 = 1
-        else:
-            self.s1 = self.s2 = 0.5
+    def __str__(self):
+        return (
+            f"{self.p1.first_name} {self.p1.last_name} "
+            f"{self.s1} - {self.s2} "
+            f"{self.p2.first_name} {self.p2.last_name}"
+        )
 
     def serialize(self):
         return (

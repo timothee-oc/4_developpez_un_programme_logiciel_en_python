@@ -7,14 +7,14 @@ class PlayerView:
         player_data["id"] = input("Identifiant national: ")
         print()
         return player_data
-
+    
     def input_player_id(self):
         id = input("Identifiant du joueur: ")
         print()
         return id
     
-    def alert_not_existing(self, id):
+    def alert_not_existing_player(self, id):
         print(f"Aucun joueur ne correspond à l'identifiant {id} !\n")
 
-    def display_player(self, player):
-        print(player)
+    def inform_created(self):
+        print("Joueur ajouté avec succès à la base de données !\n")

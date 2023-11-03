@@ -26,16 +26,7 @@ class MenuController:
                         self.view.alert_unknown_choice(choice)
             elif choice == '2':
                 player_controller = PlayerController(view=PlayerView())
-                while True:
-                    choice = self.view.choice_player()
-                    if choice == '1':
-                        player_controller.create_player()
-                    elif choice == '2':
-                        player_controller.search_player()
-                    elif choice == '3':
-                        break
-                    else:
-                        self.view.alert_unknown_choice(choice)
+                player_controller.create_player()
             elif choice == '3':
                 report_controller = ReportController(view=ReportView())
                 while True:

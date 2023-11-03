@@ -5,6 +5,9 @@ class RoundModel:
         self.name = name
         self.matchs = matchs
 
+    def __str__(self):
+        return f"{self.name}"
+
     def serialize(self):
         return {
             "name": self.name,

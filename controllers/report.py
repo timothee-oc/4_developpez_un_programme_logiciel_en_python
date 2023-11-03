@@ -12,7 +12,7 @@ class ReportController:
             extract_json(f"{PLAYERS_DIR}{player_file}") for player_file in all_players_files
         ]
         all_players = [
-            PlayerModel(**player_data) for player_data in all_players_data
+            PlayerModel.deserialize(player_data) for player_data in all_players_data
         ]
         self.view.display_all_players(all_players)
 
@@ -22,7 +22,7 @@ class ReportController:
             extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files
         ]
         all_tournaments = [
-            TournamentModel(**tournament_data) for tournament_data in all_tournaments_data
+            TournamentModel.deserialize(tournament_data) for tournament_data in all_tournaments_data
         ]
         self.view.display_all_tournaments(all_tournaments)
 
@@ -32,7 +32,7 @@ class ReportController:
         if f"{name}.json" in tournaments_files:
             file_path = f"{TOURNAMENTS_DIR}{name}.json"
             tournament_data = extract_json(file_path)
-            tournament = TournamentModel(**tournament_data)
+            tournament = TournamentModel.deserialize(tournament_data)
             self.view.display_tournament(tournament)
         else:
             self.view.alert_not_existing_tournament(name)
@@ -44,7 +44,7 @@ class ReportController:
         if f"{name}.json" in tournaments_files:
             file_path = f"{TOURNAMENTS_DIR}{name}.json"
             tournament_data = extract_json(file_path)
-            tournament = TournamentModel(**tournament_data)
+            tournament = TournamentModel.deserialize(tournament_data)
             self.view.display_tournament_players(tournament)
         else:
             self.view.alert_not_existing_tournament(name)
