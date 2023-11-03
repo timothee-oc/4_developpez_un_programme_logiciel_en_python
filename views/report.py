@@ -26,7 +26,7 @@ class ReportView:
     def display_tournament_players(self, tournament):
         print(f"[JOUEURS INSCRITS AU TOURNOI '{tournament.name}']:")
         for player in tournament.players:
-            print(f"\t{player}")
+            print(player)
         print()
 
     def display_tournament_rounds(self, tournament):
