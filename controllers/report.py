@@ -3,8 +3,8 @@ from models.tournament import TournamentModel
 from utils import list_data_files, extract_json, PLAYERS_DIR, TOURNAMENTS_DIR
 
 class ReportController:
-    def __init__(self, view):
-        self.view = view
+    def __init__(self, report_view):
+        self.view = report_view
 
     def list_all_players(self):
         all_players_files = list_data_files(PLAYERS_DIR)

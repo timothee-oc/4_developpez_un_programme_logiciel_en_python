@@ -1,10 +1,9 @@
 from models.match import MatchModel
-from views.match import MatchView
 from random import choice
 
 class MatchController:
-    def __init__(self, view: MatchView):
-        self.view = view
+    def __init__(self, match_view):
+        self.view = match_view
 
     def create_match(self, pair):
         match = MatchModel(([pair[0], 0], [pair[1], 0]))

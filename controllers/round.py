@@ -1,12 +1,10 @@
 from models.round import RoundModel
-from controllers.match import MatchController
-from views.match import MatchView
 from random import choice
 
 class RoundController:
-    def __init__(self, previous_rounds, view):
-        self.view = view
-        self.previous_rounds = previous_rounds
+    def __init__(self, round_view):
+        self.view = round_view
+        self.previous_rounds = []
 
     def create_round(self, current_round):
         round_name = f"Round {current_round}"
@@ -50,9 +48,8 @@ class RoundController:
                     return True
         return False
     
-    def run_round(self, pairs, round):
+    def run_round(self, pairs, round, match_controller):
         matchs = []
-        match_controller = MatchController(view=MatchView())
         self.view.display_round_number(round)
         for pair in pairs:
             match = match_controller.create_match(pair)

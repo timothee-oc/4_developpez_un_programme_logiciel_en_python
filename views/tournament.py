@@ -22,11 +22,14 @@ class TournamentView:
     def alert_already_finished(self):
         print(f"Tous les rounds de ce tournoi ont déjà été joués !\n")
 
-    def display_registered_players(self, tournament):
-        print(f"{len(tournament.players)} JOUEURS INSCRITS:\n")
-        for player in tournament.players:
+    def display_registered_players(self, players):
+        print(f"{len(players)} JOUEURS INSCRITS:\n")
+        for player in players:
             print(f"\t{player.id}: {player.first_name} {player.last_name}")
         print()
 
     def alert_not_even(self):
         print(f"Vous devez inscrire un nombre pair de joueurs !\n")
+
+    def alert_no_players(self):
+        print(f"Vous devez inscrire au moins deux joueurs !\n")

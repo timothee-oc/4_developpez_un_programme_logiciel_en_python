@@ -13,7 +13,7 @@ class PlayerView:
         print()
         return id
     
-    def alert_not_existing_player(self, id):
+    def alert_not_existing(self, id):
         print(f"Aucun joueur ne correspond à l'identifiant {id} !\n")
 
     def inform_created(self):

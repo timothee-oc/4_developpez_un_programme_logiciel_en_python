@@ -1,10 +1,11 @@
 from models.player import PlayerModel
 from models.round import RoundModel
+from utils import TOURNAMENTS_DIR
 
 class TournamentModel:
     def __init__(self, name, place, start_date, end_date,
                  number_rounds=4, current_round=1, rounds=[],
-                 players=[], description=[]):
+                 players=[], description=""):
         self.name = name
         self.place = place
         self.start_date = start_date
@@ -14,6 +15,7 @@ class TournamentModel:
         self.rounds = rounds
         self.players = players
         self.description = description
+        self.file_path = f"{TOURNAMENTS_DIR}{self.name}.json"
 
     def __str__(self):
         return (
