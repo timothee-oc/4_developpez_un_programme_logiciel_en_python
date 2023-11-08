@@ -18,3 +18,9 @@ class PlayerView:
 
     def inform_created(self):
         print("Joueur ajouté avec succès à la base de données !\n")
+
+    def display_all_players(self, all_players):
+        print("[LISTE DE TOUS LES JOUEURS]\n")
+        for player in all_players:
+            print(player)
+        print()

@@ -81,3 +81,24 @@ class TournamentController:
         for pair in pairs:
             self.tournament.players.append(pair[0])
             self.tournament.players.append(pair[1])
+
+    def list_all_tournaments(self):
+        all_tournaments_files = list_data_files(TOURNAMENTS_DIR)
+        all_tournaments_data = [extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files]
+        all_tournaments = [TournamentModel.deserialize(tournament_data) for tournament_data in all_tournaments_data]
+        self.view.display_all_tournaments(all_tournaments)
+
+    def display_one_tournament(self):
+        self.search_tournament()
+        if self.tournament:
+            self.view.display_one_tournament(self.tournament)
+
+    def list_tournament_players(self):
+        self.search_tournament()
+        if self.tournament:
+            self.view.display_tournament_players(self.tournament)
+
+    def list_tournament_rounds(self):
+        self.search_tournament()
+        if self.tournament:
+            self.view.display_tournament_rounds(self.tournament)

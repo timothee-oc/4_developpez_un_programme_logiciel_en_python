@@ -33,3 +33,28 @@ class TournamentView:
 
     def alert_no_players(self):
         print(f"Vous devez inscrire au moins deux joueurs !\n")
+
+    def display_all_tournaments(self, all_tournaments):
+        print("[LISTE DE TOUS LES TOURNOIS]\n")
+        for tournament in all_tournaments:
+            print(tournament)
+        print()
+
+    def display_one_tournament(self, tournament):
+        print(tournament)
+        print()
+
+    def display_tournament_players(self, tournament):
+        print(f"[LISTE DES JOUEURS DU TOURNOI '{tournament.name}']\n")
+        for player in tournament.players:
+            print(player)
+        print()
+
+    def display_tournament_rounds(self, tournament):
+        print(f"[LISTE DES ROUNDS DU TOURNOI '{tournament.name}']\n")
+        for round in tournament.rounds:
+            print(f"\t{round}")
+            for match in round.matchs:
+                print(f"\t{match}")
+            print()
+        print()

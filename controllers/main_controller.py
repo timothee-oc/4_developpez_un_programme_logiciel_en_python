@@ -46,15 +46,15 @@ class MainController():
         while True:
             choice = self.view.choice_report()
             if choice == '1':
-                self.report_controller.list_all_players()
+                self.player_controller.list_all_players()
             elif choice == '2':
-                self.report_controller.list_all_tournaments()
+                self.tournament_controller.list_all_tournaments()
             elif choice == '3':
-                self.report_controller.display_one_tournament()
+                self.tournament_controller.display_one_tournament()
             elif choice == '4':
-                self.report_controller.list_tournament_players()
+                self.tournament_controller.list_tournament_players()
             elif choice == '5':
-                self.report_controller.list_tournament_rounds()
+                self.tournament_controller.list_tournament_rounds()
             elif choice == '6':
                 break
             else:
