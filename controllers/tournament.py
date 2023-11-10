@@ -2,6 +2,7 @@ from models.tournament import TournamentModel
 from utils import TOURNAMENTS_DIR, save_json, extract_json, list_data_files
 from random import shuffle
 
+
 class TournamentController:
     def __init__(self, tournament_view):
         self.view = tournament_view
@@ -29,8 +30,9 @@ class TournamentController:
                 break
             else:
                 self.view.alert_not_existing_tournament(name)
-            
+
     def register_players(self, player_controller):
+        player_controller.list_all_players()
         while True:
             self.view.display_registered_players(self.tournament.players)
             player = player_controller.search_player()
@@ -51,7 +53,7 @@ class TournamentController:
             self.view.alert_already_finished()
             return False
         return True
-        
+
     def run_tournament(self, round_controller, match_controller):
         if self.check_runnable():
             self.set_players_points(self.tournament)
@@ -69,6 +71,9 @@ class TournamentController:
                 self.tournament.rounds.append(round)
                 self.reset_players(pairs)
                 self.tournament.current_round += 1
+                if self.tournament.current_round > self.tournament.number_rounds:
+                    description = self.view.input_tournament_description()
+                    self.tournament.description = description
                 self.save()
 
     def set_players_points(self, tournament):
@@ -84,7 +89,9 @@ class TournamentController:
 
     def list_all_tournaments(self):
         all_tournaments_files = list_data_files(TOURNAMENTS_DIR)
-        all_tournaments_data = [extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files]
+        all_tournaments_data = [
+            extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files
+        ]
         all_tournaments = [TournamentModel.deserialize(tournament_data) for tournament_data in all_tournaments_data]
         self.view.display_all_tournaments(all_tournaments)
 

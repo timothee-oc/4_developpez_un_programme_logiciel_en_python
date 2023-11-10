@@ -2,6 +2,7 @@ from models.player import PlayerModel
 from models.round import RoundModel
 from utils import TOURNAMENTS_DIR
 
+
 class TournamentModel:
     def __init__(self, name, place, start_date, end_date,
                  number_rounds=4, current_round=1, rounds=[],
@@ -17,13 +18,6 @@ class TournamentModel:
         self.description = description
         self.file_path = f"{TOURNAMENTS_DIR}{self.name}.json"
 
-    def __str__(self):
-        return (
-            f"{self.name}\n"
-            f"Lieu: {self.place}\n"
-            f"Du {self.start_date} au {self.end_date}\n"
-        )
-    
     def serialize(self):
         return {
             "name": self.name,
@@ -36,7 +30,7 @@ class TournamentModel:
             "players": [player.serialize() for player in self.players],
             "description": self.description
         }
-    
+
     @classmethod
     def deserialize(cls, data: dict) -> 'TournamentModel':
         return TournamentModel(

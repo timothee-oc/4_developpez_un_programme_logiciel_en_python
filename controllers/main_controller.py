@@ -1,10 +1,9 @@
 class MainController():
     def __init__(self, match_controller, player_controller,
-                 report_controller, round_controller, tournament_controller,
+                 round_controller, tournament_controller,
                  main_view):
         self.match_controller = match_controller
         self.player_controller = player_controller
-        self.report_controller = report_controller
         self.round_controller = round_controller
         self.tournament_controller = tournament_controller
         self.view = main_view

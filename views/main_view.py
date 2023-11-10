@@ -10,7 +10,7 @@ class MainView():
         )
         print()
         return choice
-    
+
     def choice_tournament(self):
         choice = input(
             "\n[MENU TOURNOI]\n"
@@ -22,7 +22,7 @@ class MainView():
         )
         print()
         return choice
-    
+
     def choice_report(self):
         choice = input(
             "\n[MENU RAPPORT]\n"
@@ -36,6 +36,6 @@ class MainView():
         )
         print()
         return choice
-    
+
     def alert_unknown_choice(self, choice):
         print(f"Erreur: {choice} ne correspond à aucune option !\n")

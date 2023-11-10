@@ -1,5 +1,7 @@
 from models.round import RoundModel
 from random import choice
+from datetime import datetime
+
 
 class RoundController:
     def __init__(self, round_view):
@@ -8,9 +10,10 @@ class RoundController:
 
     def create_round(self, current_round):
         round_name = f"Round {current_round}"
-        round = RoundModel(round_name)
+        start_date_time = datetime.now()
+        round = RoundModel(round_name, start_date_time)
         return round
-    
+
     def pair_players(self, players):
         pairs = []
         while len(players) >= 2:
@@ -18,7 +21,7 @@ class RoundController:
             p2 = self.find_p2(p1, players)
             pairs.append((p1, p2))
         return pairs
-    
+
     def find_p2(self, p1, players):
         if len(players) > 1:
             if players[0].points == players[1].points:
@@ -40,14 +43,14 @@ class RoundController:
             else:
                 candidates.append(player)
         return candidates
-    
+
     def check_already_met(self, p1, candidate):
         for round in self.previous_rounds:
             for match in round.matchs:
                 if (match.p1, match.p2) in [(p1, candidate), (candidate, p1)]:
                     return True
         return False
-    
+
     def run_round(self, pairs, round, match_controller):
         matchs = []
         self.view.display_round_number(round)
@@ -55,4 +58,5 @@ class RoundController:
             match = match_controller.create_match(pair)
             match_controller.run_match(match)
             matchs.append(match)
+        round.end_date_time = datetime.now()
         return matchs

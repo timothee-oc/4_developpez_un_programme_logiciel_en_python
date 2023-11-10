@@ -6,13 +6,6 @@ class PlayerModel:
         self.id = id
         self.points = 0
 
-    def __str__(self):
-        return (
-            f"{self.first_name} {self.last_name}\n"
-            f"Né(e) le {self.birth_date}\n"
-            f"INE: {self.id}\n"
-        )
-    
     def serialize(self):
         return {
             "first_name": self.first_name,

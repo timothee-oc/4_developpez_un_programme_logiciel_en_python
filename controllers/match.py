@@ -1,6 +1,7 @@
 from models.match import MatchModel
 from random import choice
 
+
 class MatchController:
     def __init__(self, match_view):
         self.view = match_view
@@ -10,8 +11,8 @@ class MatchController:
         return match
 
     def run_match(self, match):
-        # winner = self.view.input_winner(match)
-        winner = self.random_winner() # JUSTE POUR TESTER
+        winner = self.view.input_winner(match)
+        # winner = self.random_winner() # JUSTE POUR TESTER
         self.set_scores(winner, match)
         match.p1.points += match.s1
         match.p2.points += match.s2

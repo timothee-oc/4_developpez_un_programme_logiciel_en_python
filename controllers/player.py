@@ -1,6 +1,7 @@
 from models.player import PlayerModel
 from utils import save_json, list_data_files, extract_json, PLAYERS_DIR
 
+
 class PlayerController:
     def __init__(self, player_view):
         self.view = player_view
