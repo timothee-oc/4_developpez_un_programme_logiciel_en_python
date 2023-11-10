@@ -1,4 +1,4 @@
-from models.match import MatchModel
+from .match import MatchModel
 from datetime import datetime
 
 

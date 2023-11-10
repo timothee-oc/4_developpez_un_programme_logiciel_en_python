@@ -1,4 +1,4 @@
-from models.player import PlayerModel
+from models import PlayerModel
 from utils import save_json, list_data_files, extract_json, PLAYERS_DIR
 
 

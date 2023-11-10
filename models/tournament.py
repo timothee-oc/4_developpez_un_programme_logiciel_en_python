@@ -1,5 +1,5 @@
-from models.player import PlayerModel
-from models.round import RoundModel
+from .player import PlayerModel
+from .round import RoundModel
 from utils import TOURNAMENTS_DIR
 
 

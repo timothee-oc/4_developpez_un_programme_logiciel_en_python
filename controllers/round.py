@@ -1,4 +1,4 @@
-from models.round import RoundModel
+from models import RoundModel
 from random import choice
 from datetime import datetime
 

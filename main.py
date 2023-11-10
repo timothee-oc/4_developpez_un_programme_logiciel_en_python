@@ -1,14 +1,14 @@
-from views.main_view import MainView
-from views.match import MatchView
-from views.player import PlayerView
-from views.round import RoundView
-from views.tournament import TournamentView
+from views import MainView
+from views import MatchView
+from views import PlayerView
+from views import RoundView
+from views import TournamentView
 
-from controllers.main_controller import MainController
-from controllers.match import MatchController
-from controllers.player import PlayerController
-from controllers.round import RoundController
-from controllers.tournament import TournamentController
+from controllers import MainController
+from controllers import MatchController
+from controllers import PlayerController
+from controllers import RoundController
+from controllers import TournamentController
 
 from utils import create_data_dirs
 

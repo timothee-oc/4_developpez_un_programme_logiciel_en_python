@@ -1,4 +1,4 @@
-from models.tournament import TournamentModel
+from models import TournamentModel
 from utils import TOURNAMENTS_DIR, save_json, extract_json, list_data_files
 from random import shuffle
 

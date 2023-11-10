@@ -1,4 +1,4 @@
-from models.match import MatchModel
+from models import MatchModel
 from random import choice
 
 
