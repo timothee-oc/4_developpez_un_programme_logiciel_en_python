@@ -16,7 +16,7 @@ class TournamentView:
         print()
         return name
 
-    def alert_not_existing_tournament(self, name):
+    def alert_not_existing(self, name):
         print(f"Aucun tournoi ne correspond au nom {name} !\n")
 
     def alert_already_finished(self):
@@ -68,9 +68,22 @@ class TournamentView:
                 )
             print()
         print()
-
-    def input_tournament_description(self):
-        print("Entrez une description du tournoi: ")
-        description = input("=> ")
+    
+    def display_round_matchs(self, round, pairs):
+        print(f"{round.name}\n")
+        print(f"Matchs du round:")
+        for pair in pairs:
+            print(f"\t{pair[0].first_name} vs {pair[1].first_name}")
         print()
-        return description
+
+    def input_winner(self, match):
+        print(f"{match.p1.first_name} vs {match.p2.first_name}")
+        print("Qui a gagné ce match ?")
+        winner = input(
+            "0 -> Egalité\n"
+            f"1 -> {match.p1.first_name}\n"
+            f"2 -> {match.p2.first_name}\n"
+            "=> "
+            )
+        print()
+        return winner

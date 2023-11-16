@@ -20,6 +20,5 @@ class MatchModel:
             pair=(
                 [PlayerModel.deserialize(pair[0][0]), pair[0][1]],
                 [PlayerModel.deserialize(pair[1][0]), pair[1][1]]
-
             )
         )

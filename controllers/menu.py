@@ -1,10 +1,6 @@
-class MainController():
-    def __init__(self, match_controller, player_controller,
-                 round_controller, tournament_controller,
-                 main_view):
-        self.match_controller = match_controller
+class MenuController():
+    def __init__(self, player_controller, tournament_controller, main_view):
         self.player_controller = player_controller
-        self.round_controller = round_controller
         self.tournament_controller = tournament_controller
         self.view = main_view
 
@@ -17,7 +13,7 @@ class MainController():
                 self.player_controller.create_player()
             elif choice == '3':
                 self.report_menu()
-            elif choice == '4':
+            elif choice == '':
                 break
             else:
                 self.view.alert_unknown_choice(choice)
@@ -28,15 +24,10 @@ class MainController():
             if choice == '1':
                 self.tournament_controller.create_tournament()
             elif choice == '2':
-                self.tournament_controller.search_tournament()
-                if self.tournament_controller.tournament:
-                    self.tournament_controller.register_players(self.player_controller)
+                self.tournament_controller.register_players(self.player_controller)
             elif choice == '3':
-                self.tournament_controller.search_tournament()
-                if self.tournament_controller.tournament:
-                    self.tournament_controller.run_tournament(self.round_controller,
-                                                              self.match_controller)
-            elif choice == '4':
+                self.tournament_controller.run_tournament()
+            elif choice == '':
                 break
             else:
                 self.view.alert_unknown_choice(choice)
@@ -54,7 +45,7 @@ class MainController():
                 self.tournament_controller.list_tournament_players()
             elif choice == '5':
                 self.tournament_controller.list_tournament_rounds()
-            elif choice == '6':
+            elif choice == '':
                 break
             else:
                 self.view.alert_unknown_choice(choice)

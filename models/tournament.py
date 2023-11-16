@@ -1,6 +1,6 @@
 from .player import PlayerModel
 from .round import RoundModel
-from utils import TOURNAMENTS_DIR
+from utils import TOURNAMENTS_DIR, save_json
 
 
 class TournamentModel:
@@ -30,6 +30,9 @@ class TournamentModel:
             "players": [player.serialize() for player in self.players],
             "description": self.description
         }
+    
+    def save(self):
+        save_json(self.serialize(), self.file_path)
 
     @classmethod
     def deserialize(cls, data: dict) -> 'TournamentModel':

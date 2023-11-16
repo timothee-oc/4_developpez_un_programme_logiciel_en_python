@@ -1,11 +1,11 @@
-class MainView():
+class MenuView():
     def choice_main(self):
         choice = input(
-            "\n[MENU PRINCIPAL]\n"
+            "[MENU PRINCIPAL]\n"
             " 1. Gestion des tournois\n"
             " 2. Créer un joueur\n"
-            " 3. Gestion des rapports\n"
-            " 4. Quitter\n"
+            " 3. Générer des rapports\n"
+            " Laissez vide pour quitter\n"
             " => "
         )
         print()
@@ -13,11 +13,11 @@ class MainView():
 
     def choice_tournament(self):
         choice = input(
-            "\n[MENU TOURNOI]\n"
+            "[MENU TOURNOI]\n"
             " 1. Créer un tournoi\n"
             " 2. Inscrire des joueurs à un tournoi\n"
             " 3. (Re)Lancer un tournoi\n"
-            " 4. Retour\n"
+            " Laissez vide pour revenir au menu principal\n"
             " => "
         )
         print()
@@ -25,13 +25,13 @@ class MainView():
 
     def choice_report(self):
         choice = input(
-            "\n[MENU RAPPORT]\n"
+            "[MENU RAPPORT]\n"
             " 1. Liste de tous les joueurs\n"
             " 2. Liste de tous les tournois\n"
             " 3. Chercher un tournoi\n"
             " 4. Liste des joueurs d'un tournoi\n"
             " 5. Liste des tours d'un tournoi\n"
-            " 6. Retour\n"
+            " Laissez vide pour revenir au menu principal\n"
             " => "
         )
         print()

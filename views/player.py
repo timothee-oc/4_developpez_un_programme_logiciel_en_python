@@ -27,4 +27,3 @@ class PlayerView:
                 f"Né(e) le {player.birth_date}\n"
                 f"INE: {player.id}\n"
             )
-        print()
