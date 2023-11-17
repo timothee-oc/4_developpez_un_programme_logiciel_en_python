@@ -66,7 +66,7 @@ class TournamentController:
             - At least two registered players
             - Not an odd number of players
             - Still rounds to be played (not over)
-        
+
         :return bool
         """
         if len(self.tournament.players) == 0:
@@ -154,7 +154,7 @@ class TournamentController:
         the best match among next players using their points and checking
         if they have already met.
 
-        :return list[tuple(player(PlayerModel), player(PlayerModel))] 
+        :return list[tuple(player(PlayerModel), player(PlayerModel))]
         """
         pairs = []
         while len(self.tournament.players) >= 2:
@@ -169,8 +169,8 @@ class TournamentController:
         Ask the user to select a winner between both players of a match.
         Set players scores (0 if looser, 1 if winner, 0.5 for both if draw).
         Update players points accordingly.
-        
-        :params match(MatchModel) 
+
+        :params match(MatchModel)
         """
         winner = self.view.input_winner(match)
         if winner == '1':
@@ -189,7 +189,7 @@ class TournamentController:
         it hasn't already been played.
         Put back match's players in tournament players list to be paired again in next round.
         Save tournament sate after each match, allowing to exit program and start again where
-        we left. 
+        we left.
         """
         self.view.display_round_matchs(self.tournament.rounds[-1])
         for match in self.tournament.rounds[-1].matchs:

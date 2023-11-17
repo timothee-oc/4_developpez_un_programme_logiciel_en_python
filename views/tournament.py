@@ -19,7 +19,7 @@ class TournamentView:
 
     def inform_created(self):
         """
-        Inform the user that the new tournament was successfully created in database. 
+        Inform the user that the new tournament was successfully created in database.
         """
         print("Tournoi ajouté avec succès à la base de données !\n")
 
@@ -68,7 +68,7 @@ class TournamentView:
 
     def display_all_tournaments(self, all_tournaments):
         """
-        Generates a report of all existing tournaments in the database. 
+        Generates a report of all existing tournaments in the database.
         """
         print("[LISTE DE TOUS LES TOURNOIS]\n")
         for tournament in all_tournaments:

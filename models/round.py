@@ -20,7 +20,7 @@ class RoundModel:
         Used to save round's data in a json file.
         Used when saving a tournament's data.
 
-        :return dict 
+        :return dict
         """
         return {
             "name": self.name,

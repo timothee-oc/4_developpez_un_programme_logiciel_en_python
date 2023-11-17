@@ -21,7 +21,7 @@ class PlayerModel:
         Used when creating player or when saving a tournament's data.
         Points and file path attributes are not saved.
 
-        :return dict() 
+        :return dict()
         """
         return {
             "first_name": self.first_name,

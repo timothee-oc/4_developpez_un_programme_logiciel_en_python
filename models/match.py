@@ -17,7 +17,7 @@ class MatchModel:
         Used to save match's data in a json file.
         Used when saving a tournament's data.
 
-        :return tuple(list[player(PlayerModel), score(int)]) 
+        :return tuple(list[player(PlayerModel), score(int)])
         """
         return (
             [self.player1.serialize(), self.score1],

@@ -29,7 +29,7 @@ class TournamentModel:
         """
         Used to save tournament's data in a json file.
 
-        :return dict() 
+        :return dict()
         """
         return {
             "name": self.name,

@@ -18,7 +18,7 @@ def create_data_dirs():
 def save_json(data, file_path):
     """
     Used to save some data in a file as a json format.
-    Used to save tournaments and players data from the database. 
+    Used to save tournaments and players data from the database.
     """
     with open(file_path, 'w', encoding='utf-8') as fp:
         dump(data, fp, ensure_ascii=False, indent=4)
