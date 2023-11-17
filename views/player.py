@@ -58,10 +58,10 @@ class PlayerView:
         """
         Generates a report of all players existing in database with their personnal data.
         """
-        print("[LISTE DE TOUS LES JOUEURS]\n")
+        print("[LISTE DE TOUS LES JOUEURS]")
         for player in all_players:
             print(
-                f"{player.first_name} {player.last_name}\n"
+                f"{player.last_name} {player.first_name}\n"
                 f"Né(e) le {player.birth_date}\n"
                 f"INE: {player.id}\n"
             )

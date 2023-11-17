@@ -59,10 +59,11 @@ class PlayerController:
 
     def list_all_players(self):
         """
-        Allows to generate a report displaying the full list of players in database.
+        Allows to generate a report displaying the full list of players in database ordered alphabetically.
         Also used during registration to inform the user of existing players IDs.
         """
         all_players_files = list_data_files(PLAYERS_DIR)
         all_players_data = [extract_json(f"{PLAYERS_DIR}{player_file}") for player_file in all_players_files]
         all_players = [PlayerModel.deserialize(player_data) for player_data in all_players_data]
-        self.view.display_all_players(all_players)
+        all_players_ordered = sorted(all_players, key=lambda p: p.last_name)
+        self.view.display_all_players(all_players_ordered)
