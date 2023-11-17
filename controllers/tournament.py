@@ -296,6 +296,7 @@ class TournamentController:
         """
         self.search_tournament()
         if self.tournament:
+            self.tournament.players = sorted(self.tournament.players, key=lambda p: p.last_name)
             self.view.display_tournament_players(self.tournament)
 
     def list_tournament_rounds(self):

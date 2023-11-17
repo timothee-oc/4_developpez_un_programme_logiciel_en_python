@@ -106,7 +106,7 @@ class TournamentView:
         """
         print(f"[LISTE DES JOUEURS DU TOURNOI '{tournament.name}']")
         for player in tournament.players:
-            print(f"{player.first_name} {player.last_name}")
+            print(f"{player.last_name} {player.first_name}")
         print()
 
     def display_tournament_rounds(self, tournament):
