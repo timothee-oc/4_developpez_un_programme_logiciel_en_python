@@ -143,7 +143,7 @@ class TournamentView:
             )
         print()
         return winner
-    
+
     def display_ranking(self, players):
         """
         Displays the current ranking list of tournament players by points.

@@ -21,7 +21,7 @@ class PlayerModel:
 
         :return bool
         """
-        return self.id == __value.id 
+        return self.id == __value.id
 
     def serialize(self):
         """
