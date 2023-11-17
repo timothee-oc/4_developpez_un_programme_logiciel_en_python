@@ -268,8 +268,13 @@ class TournamentController:
                 self.tournament.rounds[-1].end_date_time = datetime.now()
                 self.tournament.current_round += 1
                 self.tournament.save()
-            self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
-            self.view.inform_tournament_over(self.tournament)
+                if self.tournament.current_round <= self.tournament.number_rounds:
+                    play_next_round = self.view.keep_playing()
+                    if play_next_round not in ['O', 'o']:
+                        break
+            if self.tournament.current_round > self.tournament.number_rounds:
+                self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
+                self.view.inform_tournament_over(self.tournament)
 
     def list_all_tournaments(self):
         """

@@ -178,3 +178,11 @@ class TournamentView:
         for player in tournament.players:
             print(f"{player.first_name} {player.points}")
         print()
+
+    def keep_playing(self):
+        """
+        Ask the user if he wants to play the next round
+        """
+        choice = input("Voulez-vous lancer le round suivant ? (o/n) ")
+        print()
+        return choice
