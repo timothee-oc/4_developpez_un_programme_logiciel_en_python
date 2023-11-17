@@ -14,8 +14,23 @@ class TournamentView:
         tournament_data["place"] = input("Lieu du tournoi: ")
         tournament_data["start_date"] = input("Date de début: ")
         tournament_data["end_date"] = input("Date de fin: ")
+        tournament_data["number_rounds"] = input("Nombre de tours (Laissez vide pour 4 par défaut): ")
         print()
         return tournament_data
+
+    def alert_not_int(self, user_input):
+        """
+        Alert the user that his input for the number of rounds when creating a tournament cannot be cast
+        to an integer.
+        """
+        print(f"Erreur: '{user_input}' n'est pas interprétable comme un entier positif !")
+        print("Vous devez entrer un nombre de rounds supérieur ou égal à 1.\n")
+
+    def alert_already_existing(self, name):
+        """
+        Tell the user that the tournament he is trying to create already exist in database.
+        """
+        print(f"Un tournoi avec le nom '{name}' existe déjà dans la base de données !\n")
 
     def inform_created(self):
         """

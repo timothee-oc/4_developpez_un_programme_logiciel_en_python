@@ -17,9 +17,40 @@ class TournamentController:
         Create a new tournament in database from user input.
         """
         tournament_data = self.view.input_tournament_data()
-        self.tournament = TournamentModel(**tournament_data)
-        self.tournament.save()
-        self.view.inform_created()
+        if self.check_number_rounds(tournament_data):
+            self.tournament = TournamentModel(**tournament_data)
+            if self.check_valid_name():
+                self.tournament.save()
+                self.view.inform_created()
+
+    def check_number_rounds(self, tournament_data):
+        """
+        Check the user input for the number of rounds of the new tournament.
+        If empty, we keep the default value number_rounds attribute.
+        Input is valid if it can be cast to an integer >= 1
+        """
+        if tournament_data["number_rounds"] == "":
+            del tournament_data["number_rounds"]
+            return True
+
+        if not tournament_data["number_rounds"].isdigit() or int(tournament_data["number_rounds"]) == 0:
+            self.view.alert_not_int(tournament_data["number_rounds"])
+            return False
+
+        return True
+
+    def check_valid_name(self):
+        """
+        Check if the name provided by the user when creating a new tournament is valid.
+        Valid means it must not be already existing in database.
+
+        :return bool
+        """
+        tournaments_files = list_data_files(TOURNAMENTS_DIR)
+        if f"{self.tournament.name}.json" in tournaments_files:
+            self.view.alert_already_existing(self.tournament.name)
+            return False
+        return True
 
     def search_tournament(self):
         """
