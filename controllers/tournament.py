@@ -81,6 +81,11 @@ class TournamentController:
         return True
 
     def update_players_points(self, match):
+        """
+        Update the points of a match's players in the tournament players list using their
+        corresponding copy in a given match.
+        Index can be retrieved because equality of player objects depends on ID attribute.
+        """
         player1_index = self.tournament.players.index(match.player1)
         player2_index = self.tournament.players.index(match.player2)
         self.tournament.players[player1_index].points += match.score1
