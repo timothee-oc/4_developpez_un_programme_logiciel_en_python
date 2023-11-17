@@ -1,3 +1,4 @@
+import re
 from models import PlayerModel
 from utils import list_data_files, extract_json, PLAYERS_DIR
 
@@ -16,8 +17,25 @@ class PlayerController:
         """
         player_data = self.view.input_player_data()
         self.player = PlayerModel(**player_data)
-        self.player.save()
-        self.view.inform_created()
+        if self.check_valid_id():
+            self.player.save()
+            self.view.inform_created()
+
+    def check_valid_id(self):
+        """
+        Check is the ID provided by the user when creating a new player is valid.
+        Valid means it is composed of two capital letters followed by 5 digits.
+        It also must not be already existing in database.
+        """
+        players_files = list_data_files(PLAYERS_DIR)
+        pattern = re.compile(r'^[A-Z]{2}\d{5}$')
+        if not pattern.match(self.player.id):
+            self.view.alert_invalid_id(self.player.id)
+            return False
+        if f"{self.player.id}.json" in players_files:
+            self.view.alert_already_existing(self.player.id)
+            return False
+        return True
 
     def search_player(self):
         """
