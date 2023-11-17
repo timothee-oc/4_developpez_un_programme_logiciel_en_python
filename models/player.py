@@ -15,6 +15,14 @@ class PlayerModel:
         self.points = 0
         self.file_path = f"{PLAYERS_DIR}{self.id}.json"
 
+    def __eq__(self, __value: 'PlayerModel') -> bool:
+        """
+        To compare two players, compare their unique ID.
+
+        :return bool
+        """
+        return self.id == __value.id 
+
     def serialize(self):
         """
         Used to save player's data as a json format.

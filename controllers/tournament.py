@@ -80,6 +80,12 @@ class TournamentController:
             return False
         return True
 
+    def update_players_points(self, match):
+        player1_index = self.tournament.players.index(match.player1)
+        player2_index = self.tournament.players.index(match.player2)
+        self.tournament.players[player1_index].points += match.score1
+        self.tournament.players[player2_index].points += match.score2
+
     def set_players_points(self):
         """
         Set tournament's players points back to the amount they had when
@@ -89,8 +95,7 @@ class TournamentController:
         """
         for round in self.tournament.rounds:
             for match in round.matchs:
-                match.player1.points += match.score1
-                match.player2.points += match.score2
+                self.update_players_points(match)
 
     def check_already_met(self, p1, candidate):
         """
@@ -108,7 +113,7 @@ class TournamentController:
                     return True
         return False
 
-    def find_candidates(self, p1):
+    def find_candidates(self, p1, players):
         """
         Find a list of players allowed to play against the player we are trying to match.
         Candidates need to have the same number of points and to not have already
@@ -118,16 +123,16 @@ class TournamentController:
 
         :return list[PlayerModel]
         """
-        reference = self.tournament.players[0].points
+        reference = players[0].points
         candidates = []
-        for player in self.tournament.players:
+        for player in players:
             if player.points != reference:
                 break
             elif not self.check_already_met(p1, player):
                 candidates.append(player)
         return candidates
 
-    def find_p2(self, p1):
+    def find_p2(self, p1, players):
         """
         Tries to find a second player to form a pair with the p1.
         If there's only one player left in the list, make a pair him/her.
@@ -139,13 +144,13 @@ class TournamentController:
 
         :return player(PlayerModel)
         """
-        if len(self.tournament.players) > 1 and self.tournament.players[0].points == self.tournament.players[1].points:
-            candidates = self.find_candidates(p1)
+        if len(players) > 1 and players[0].points == players[1].points:
+            candidates = self.find_candidates(p1, players)
             if len(candidates) > 0:
                 chosen = choice(candidates)
-                chosen_index = self.tournament.players.index(chosen)
-                return self.tournament.players.pop(chosen_index)
-        return self.tournament.players.pop(0)
+                chosen_index = players.index(chosen)
+                return players.pop(chosen_index)
+        return players.pop(0)
 
     def pair_players(self):
         """
@@ -156,10 +161,15 @@ class TournamentController:
 
         :return list[tuple(player(PlayerModel), player(PlayerModel))]
         """
+        players = self.tournament.players.copy()
+        if self.tournament.current_round == 1:
+            shuffle(players)
+        else:
+            players = sorted(players, key=lambda p: p.points, reverse=True)
         pairs = []
-        while len(self.tournament.players) >= 2:
-            p1 = self.tournament.players.pop(0)
-            p2 = self.find_p2(p1)
+        while len(players) >= 2:
+            p1 = players.pop(0)
+            p2 = self.find_p2(p1, players)
             pairs.append((p1, p2))
         return pairs
 
@@ -179,8 +189,7 @@ class TournamentController:
             match.score2 = 1
         else:
             match.score1 = match.score2 = 0.5
-        match.player1.points += match.score1
-        match.player2.points += match.score2
+        self.update_players_points(match)
 
     def run_round(self):
         """
@@ -195,7 +204,6 @@ class TournamentController:
         for match in self.tournament.rounds[-1].matchs:
             if match.score1 == 0 and match.score2 == 0:
                 self.run_match(match)
-                self.tournament.players.extend([match.player1, match.player2])
                 self.tournament.save()
 
     def run_tournament(self):
@@ -217,16 +225,15 @@ class TournamentController:
                     self.tournament.rounds.append(
                         RoundModel(name=f"Round {self.tournament.current_round}", start_date_time=datetime.now())
                     )
-                    if self.tournament.current_round == 1:
-                        shuffle(self.tournament.players)
-                    else:
-                        self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
                     pairs = self.pair_players()
                     self.tournament.rounds[-1].matchs = [MatchModel(([pair[0], 0], [pair[1], 0])) for pair in pairs]
+                self.view.display_ranking(sorted(self.tournament.players, key=lambda p: p.points, reverse=True))
                 self.run_round()
                 self.tournament.rounds[-1].end_date_time = datetime.now()
                 self.tournament.current_round += 1
                 self.tournament.save()
+            self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
+            self.view.inform_tournament_over(self.tournament)
 
     def list_all_tournaments(self):
         """

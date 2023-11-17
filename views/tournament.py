@@ -49,7 +49,7 @@ class TournamentView:
         """
         Displays a list of all the players already registered in a given tournament.
         """
-        print(f"{len(players)} JOUEURS INSCRITS:\n")
+        print(f"{len(players)} JOUEURS INSCRITS:")
         for player in players:
             print(f"\t{player.id}: {player.first_name} {player.last_name}")
         print()
@@ -70,7 +70,7 @@ class TournamentView:
         """
         Generates a report of all existing tournaments in the database.
         """
-        print("[LISTE DE TOUS LES TOURNOIS]\n")
+        print("[LISTE DE TOUS LES TOURNOIS]")
         for tournament in all_tournaments:
             print(f"{tournament.name}")
         print()
@@ -89,7 +89,7 @@ class TournamentView:
         """
         Generates a report of all registered players in a given tournament.
         """
-        print(f"[LISTE DES JOUEURS DU TOURNOI '{tournament.name}']\n")
+        print(f"[LISTE DES JOUEURS DU TOURNOI '{tournament.name}']")
         for player in tournament.players:
             print(f"{player.first_name} {player.last_name}")
         print()
@@ -99,7 +99,7 @@ class TournamentView:
         Generates a report of all rounds of a given tournament and for each
         of its rounds displays all the matchs.
         """
-        print(f"[LISTE DES ROUNDS DU TOURNOI '{tournament.name}']\n")
+        print(f"[LISTE DES ROUNDS DU TOURNOI '{tournament.name}']")
         for round in tournament.rounds:
             print(
                 f"\t{round.name}\n"
@@ -143,3 +143,23 @@ class TournamentView:
             )
         print()
         return winner
+    
+    def display_ranking(self, players):
+        """
+        Displays the current ranking list of tournament players by points.
+        """
+        print("[CLASSEMENT DU TOURNOI EN COURS]")
+        for player in players:
+            print(f"{player.first_name} {player.points}")
+        print()
+
+    def inform_tournament_over(self, tournament):
+        """
+        Inform the user that the last round of the tournament was just played
+        and displays a final ranking of the players by points.
+        """
+        print(f"Le tournoi '{tournament.name}' est maintenant terminé !\n")
+        print("[CLASSEMENT FINAL]")
+        for player in tournament.players:
+            print(f"{player.first_name} {player.points}")
+        print()
