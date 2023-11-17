@@ -10,6 +10,10 @@ from utils import create_data_dirs
 
 
 def main():
+    """
+    Entry point of the program. Instantiate all views and controllers.
+    Launch the main menu.
+    """
     player_view = PlayerView()
     tournament_view = TournamentView()
     menu_view = MenuView()

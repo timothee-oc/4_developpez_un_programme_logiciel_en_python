@@ -5,17 +5,28 @@ from datetime import datetime
 
 
 class TournamentController:
+    """
+    Main class of the program that handles all the tournament logic.
+    """
     def __init__(self, tournament_view):
         self.view = tournament_view
         self.tournament = None
 
     def create_tournament(self):
+        """
+        Create a new tournament in database from user input.
+        """
         tournament_data = self.view.input_tournament_data()
         self.tournament = TournamentModel(**tournament_data)
         self.tournament.save()
         self.view.inform_created()
 
     def search_tournament(self):
+        """
+        Ask the user for a tournament name and search its file in database.
+        If found, instantiate the tournament attribute of this class as a
+        tournament object.
+        """
         tournaments_files = list_data_files(TOURNAMENTS_DIR)
         while True:
             name = self.view.input_tournament_name()
@@ -31,6 +42,12 @@ class TournamentController:
                 self.view.alert_not_existing(name)
 
     def register_players(self, player_controller):
+        """
+        Allows the user to register one or more player(s) to an existing tournament.
+        Uses the player controller to display players in database and search one among them.
+
+        :params player_controller(PlayerController)
+        """
         self.search_tournament()
         if self.tournament:
             player_controller.list_all_players()
@@ -38,12 +55,20 @@ class TournamentController:
                 self.view.display_registered_players(self.tournament.players)
                 player_controller.search_player()
                 if player_controller.player:
-                   self.tournament.players.append(player_controller.player)
+                    self.tournament.players.append(player_controller.player)
                 else:
                     break
             self.tournament.save()
 
     def check_runnable(self):
+        """
+        Check if the tournament to be launched is runnable:
+            - At least two registered players
+            - Not an odd number of players
+            - Still rounds to be played (not over)
+        
+        :return bool
+        """
         if len(self.tournament.players) == 0:
             self.view.alert_no_players()
             return False
@@ -54,21 +79,45 @@ class TournamentController:
             self.view.alert_already_finished()
             return False
         return True
-    
+
     def set_players_points(self):
+        """
+        Set tournament's players points back to the amount they had when
+        last exited the tournament.
+        Done by going through all previous matchs of all previous rounds.
+        Needed because points are not saved in player serialization.
+        """
         for round in self.tournament.rounds:
             for match in round.matchs:
-                match.p1.points += match.s1
-                match.p2.points += match.s2
+                match.player1.points += match.score1
+                match.player2.points += match.score2
 
     def check_already_met(self, p1, candidate):
+        """
+        During pairs making, check if the current candidate has already met
+        the player we are trying to make a pair with.
+        Done by going through all previous matchs of previous rounds.
+
+        :params p1(PlayerModel), candidate(PlayerModel)
+
+        :return bool
+        """
         for round in self.tournament.rounds:
             for match in round.matchs:
-                if (match.p1, match.p2) in [(p1, candidate), (candidate, p1)]:
+                if (match.player1, match.player2) in [(p1, candidate), (candidate, p1)]:
                     return True
         return False
 
     def find_candidates(self, p1):
+        """
+        Find a list of players allowed to play against the player we are trying to match.
+        Candidates need to have the same number of points and to not have already
+        met the p1.
+
+        :params p1(PlayerModel)
+
+        :return list[PlayerModel]
+        """
         reference = self.tournament.players[0].points
         candidates = []
         for player in self.tournament.players:
@@ -79,6 +128,17 @@ class TournamentController:
         return candidates
 
     def find_p2(self, p1):
+        """
+        Tries to find a second player to form a pair with the p1.
+        If there's only one player left in the list, make a pair him/her.
+        If the second to next has less points, make a pair with the next.
+        If no candidates were found (all already met p1), make a pair with the next.
+        Else choose a random candidate from the list.
+
+        :params p1(PlayerModel)
+
+        :return player(PlayerModel)
+        """
         if len(self.tournament.players) > 1 and self.tournament.players[0].points == self.tournament.players[1].points:
             candidates = self.find_candidates(p1)
             if len(candidates) > 0:
@@ -88,6 +148,14 @@ class TournamentController:
         return self.tournament.players.pop(0)
 
     def pair_players(self):
+        """
+        Make pairs of players before starting a new round.
+        Begin with first player in the list (most points) and try to find
+        the best match among next players using their points and checking
+        if they have already met.
+
+        :return list[tuple(player(PlayerModel), player(PlayerModel))] 
+        """
         pairs = []
         while len(self.tournament.players) >= 2:
             p1 = self.tournament.players.pop(0)
@@ -95,46 +163,75 @@ class TournamentController:
             pairs.append((p1, p2))
         return pairs
 
-    def run_match(self, pair):
-        match = MatchModel(([pair[0], 0], [pair[1], 0]))
+    def run_match(self, match):
+        """
+        Run one of the matchs of a given round.
+        Ask the user to select a winner between both players of a match.
+        Set players scores (0 if looser, 1 if winner, 0.5 for both if draw).
+        Update players points accordingly.
+        
+        :params match(MatchModel) 
+        """
         winner = self.view.input_winner(match)
         if winner == '1':
-            match.s1 = 1
+            match.score1 = 1
         elif winner == '2':
-            match.s2 = 1
+            match.score2 = 1
         else:
-            match.s1 = match.s2 = 0.5
-        match.p1.points += match.s1
-        match.p2.points += match.s2
-        return match
+            match.score1 = match.score2 = 0.5
+        match.player1.points += match.score1
+        match.player2.points += match.score2
 
     def run_round(self):
-        if self.tournament.current_round == 1:
-            shuffle(self.tournament.players)
-        else:
-            self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
-        pairs = self.pair_players()
-        round = RoundModel(name=f"Round {self.tournament.current_round}",start_date_time=datetime.now())
-        self.tournament.rounds.append(round)
-        self.view.display_round_matchs(round, pairs)
-        print(len(pairs))
-        for pair in pairs:
-            match = self.run_match(pair)
-            self.tournament.rounds[-1].matchs.append(match)
-            self.tournament.players.extend(pair)
-            self.tournament.save()
-        round.end_date_time = datetime.now()
-        self.tournament.current_round += 1
-        self.tournament.save()
+        """
+        Run a round of the tournament.
+        Display the list of the round's matchs, and run matchs in order, after checking
+        it hasn't already been played.
+        Put back match's players in tournament players list to be paired again in next round.
+        Save tournament sate after each match, allowing to exit program and start again where
+        we left. 
+        """
+        self.view.display_round_matchs(self.tournament.rounds[-1])
+        for match in self.tournament.rounds[-1].matchs:
+            if match.score1 == 0 and match.score2 == 0:
+                self.run_match(match)
+                self.tournament.players.extend([match.player1, match.player2])
+                self.tournament.save()
 
     def run_tournament(self):
+        """
+        Entry point of this class.
+        Ask the user to select an existing tournament and check if it can be run.
+        While there's still rounds to play, check if a round is currently being played
+        or create the next one.
+        Players are randomly shuffled before round 1, else sorted by points.
+        Players are put in pairs and Match object created for each pair.
+        Tournament state is also saved between rounds because we update round's end date and time
+        as well as the tournament's current round number.
+        """
         self.search_tournament()
         if self.tournament and self.check_runnable():
             self.set_players_points()
             while self.tournament.current_round <= self.tournament.number_rounds:
+                if len(self.tournament.rounds) == 0 or self.tournament.rounds[-1].end_date_time:
+                    self.tournament.rounds.append(
+                        RoundModel(name=f"Round {self.tournament.current_round}", start_date_time=datetime.now())
+                    )
+                    if self.tournament.current_round == 1:
+                        shuffle(self.tournament.players)
+                    else:
+                        self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
+                    pairs = self.pair_players()
+                    self.tournament.rounds[-1].matchs = [MatchModel(([pair[0], 0], [pair[1], 0])) for pair in pairs]
                 self.run_round()
+                self.tournament.rounds[-1].end_date_time = datetime.now()
+                self.tournament.current_round += 1
+                self.tournament.save()
 
     def list_all_tournaments(self):
+        """
+        Allows to generate a report of all the tournaments existing in the database.
+        """
         all_tournaments_files = list_data_files(TOURNAMENTS_DIR)
         all_tournaments_data = [
             extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files
@@ -143,16 +240,26 @@ class TournamentController:
         self.view.display_all_tournaments(all_tournaments)
 
     def display_one_tournament(self):
+        """
+        Ask the user for a tournament's name and if found, display its dates and place.
+        """
         self.search_tournament()
         if self.tournament:
             self.view.display_one_tournament(self.tournament)
 
     def list_tournament_players(self):
+        """
+        Ask the user for a tournament's name and if found, display its registered players.
+        """
         self.search_tournament()
         if self.tournament:
             self.view.display_tournament_players(self.tournament)
 
     def list_tournament_rounds(self):
+        """
+        Ask the user for a tournament's name and if found, display its rounds and for each
+        round its matchs.
+        """
         self.search_tournament()
         if self.tournament:
             self.view.display_tournament_rounds(self.tournament)

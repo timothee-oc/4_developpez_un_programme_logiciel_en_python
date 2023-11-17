@@ -4,6 +4,13 @@ from utils import TOURNAMENTS_DIR, save_json
 
 
 class TournamentModel:
+    """
+    Class defining a tournament.
+    A tournament has a list of registered players and a list of rounds.
+    It also has a name, a place, start and finish dates, a total number of rounds,
+    as well as the number of the current round being played, and a path to its file
+    in database.
+    """
     def __init__(self, name, place, start_date, end_date,
                  number_rounds=4, current_round=1, rounds=[],
                  players=[], description=""):
@@ -19,6 +26,11 @@ class TournamentModel:
         self.file_path = f"{TOURNAMENTS_DIR}{self.name}.json"
 
     def serialize(self):
+        """
+        Used to save tournament's data in a json file.
+
+        :return dict() 
+        """
         return {
             "name": self.name,
             "place": self.place,
@@ -30,12 +42,21 @@ class TournamentModel:
             "players": [player.serialize() for player in self.players],
             "description": self.description
         }
-    
+
     def save(self):
+        """
+        Used when creating a new tournament or between matchs and rounds
+        during run, to allow for exting and starting again.
+        """
         save_json(self.serialize(), self.file_path)
 
     @classmethod
     def deserialize(cls, data: dict) -> 'TournamentModel':
+        """
+        Class method used to create Tournament objects from a json file.
+        :params data(dict)
+        :return TournamentModel(data)
+        """
         return TournamentModel(
             name=data["name"],
             place=data["place"],
