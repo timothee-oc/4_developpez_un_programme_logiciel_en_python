@@ -36,7 +36,8 @@ class TournamentController:
         if not tournament_data["number_rounds"].isdigit() or int(tournament_data["number_rounds"]) == 0:
             self.view.alert_not_int(tournament_data["number_rounds"])
             return False
-
+        
+        tournament_data["number_rounds"] = int(tournament_data["number_rounds"])
         return True
 
     def check_valid_name(self):
