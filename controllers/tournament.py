@@ -1,7 +1,7 @@
-from models import TournamentModel, RoundModel, MatchModel
-from utils import TOURNAMENTS_DIR, extract_json, list_data_files
 from random import shuffle, choice
 from datetime import datetime
+from models import TournamentModel, RoundModel, MatchModel
+from utils import TOURNAMENTS_DIR, extract_json, list_data_files
 
 
 class TournamentController:
@@ -33,7 +33,8 @@ class TournamentController:
             del tournament_data["number_rounds"]
             return True
 
-        if not tournament_data["number_rounds"].isdigit() or int(tournament_data["number_rounds"]) == 0:
+        if not tournament_data["number_rounds"].isdigit() or \
+                int(tournament_data["number_rounds"]) == 0:
             self.view.alert_not_int(tournament_data["number_rounds"])
             return False
 
@@ -130,8 +131,8 @@ class TournamentController:
         Done by going through all previous matchs of all previous rounds.
         Needed because points are not saved in player serialization.
         """
-        for round in self.tournament.rounds:
-            for match in round.matchs:
+        for round_ in self.tournament.rounds:
+            for match in round_.matchs:
                 self.update_players_points(match)
 
     def check_already_met(self, p1, candidate):
@@ -144,8 +145,8 @@ class TournamentController:
 
         :return bool
         """
-        for round in self.tournament.rounds:
-            for match in round.matchs:
+        for round_ in self.tournament.rounds:
+            for match in round_.matchs:
                 if (match.player1, match.player2) in [(p1, candidate), (candidate, p1)]:
                     return True
         return False
@@ -260,11 +261,22 @@ class TournamentController:
             while self.tournament.current_round <= self.tournament.number_rounds:
                 if len(self.tournament.rounds) == 0 or self.tournament.rounds[-1].end_date_time:
                     self.tournament.rounds.append(
-                        RoundModel(name=f"Round {self.tournament.current_round}", start_date_time=datetime.now())
+                        RoundModel(
+                            name=f"Round {self.tournament.current_round}",
+                            start_date_time=datetime.now()
+                        )
                     )
                     pairs = self.pair_players()
-                    self.tournament.rounds[-1].matchs = [MatchModel(([pair[0], 0], [pair[1], 0])) for pair in pairs]
-                self.view.display_ranking(sorted(self.tournament.players, key=lambda p: p.points, reverse=True))
+                    self.tournament.rounds[-1].matchs = [
+                        MatchModel(([pair[0], 0], [pair[1], 0])) for pair in pairs
+                    ]
+                self.view.display_ranking(
+                    sorted(
+                        self.tournament.players,
+                        key=lambda p: p.points,
+                        reverse=True
+                    )
+                )
                 self.run_round()
                 self.tournament.rounds[-1].end_date_time = datetime.now()
                 self.tournament.current_round += 1
@@ -274,7 +286,11 @@ class TournamentController:
                     if play_next_round not in ['O', 'o']:
                         break
             if self.tournament.current_round > self.tournament.number_rounds:
-                self.tournament.players = sorted(self.tournament.players, key=lambda p: p.points, reverse=True)
+                self.tournament.players = sorted(
+                    self.tournament.players,
+                    key=lambda p: p.points,
+                    reverse=True
+                )
                 self.view.inform_tournament_over(self.tournament)
 
     def list_all_tournaments(self):
@@ -283,9 +299,15 @@ class TournamentController:
         """
         all_tournaments_files = list_data_files(TOURNAMENTS_DIR)
         all_tournaments_data = [
-            extract_json(f"{TOURNAMENTS_DIR}{tournament_file}") for tournament_file in all_tournaments_files
+            extract_json(
+                f"{TOURNAMENTS_DIR}{tournament_file}"
+            ) for tournament_file in all_tournaments_files
         ]
-        all_tournaments = [TournamentModel.deserialize(tournament_data) for tournament_data in all_tournaments_data]
+        all_tournaments = [
+            TournamentModel.deserialize(
+                tournament_data
+            ) for tournament_data in all_tournaments_data
+        ]
         self.view.display_all_tournaments(all_tournaments)
 
     def display_one_tournament(self):

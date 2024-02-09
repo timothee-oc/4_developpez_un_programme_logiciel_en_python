@@ -1,5 +1,5 @@
-from .match import MatchModel
 from datetime import datetime
+from .match import MatchModel
 
 
 class RoundModel:
@@ -9,11 +9,13 @@ class RoundModel:
     It also has a name and dates of start and finish.
     """
     def __init__(self, name, start_date_time,
-                 end_date_time=None, matchs=[]):
+                 end_date_time=None, matchs=None):
         self.name = name
         self.start_date_time = start_date_time
         self.end_date_time = end_date_time
         self.matchs = matchs
+        if self.matchs is None:
+            self.matchs = []
 
     def serialize(self):
         """
@@ -39,6 +41,8 @@ class RoundModel:
         return cls(
             name=data["name"],
             start_date_time=datetime.fromisoformat(data["start_date_time"]),
-            end_date_time=datetime.fromisoformat(data["end_date_time"]) if data["end_date_time"] else None,
+            end_date_time=datetime.fromisoformat(
+                data["end_date_time"]
+            ) if data["end_date_time"] else None,
             matchs=[MatchModel.deserialize(pair) for pair in data["matchs"]]
         )

@@ -1,6 +1,6 @@
+from utils import TOURNAMENTS_DIR, save_json
 from .player import PlayerModel
 from .round import RoundModel
-from utils import TOURNAMENTS_DIR, save_json
 
 
 class TournamentModel:
@@ -12,8 +12,8 @@ class TournamentModel:
     in database.
     """
     def __init__(self, name, place, start_date, end_date,
-                 number_rounds=4, current_round=1, rounds=[],
-                 players=[], description=""):
+                 number_rounds=4, current_round=1, rounds=None,
+                 players=None, description=""):
         self.name = name
         self.place = place
         self.start_date = start_date
@@ -21,7 +21,11 @@ class TournamentModel:
         self.number_rounds = number_rounds
         self.current_round = current_round
         self.rounds = rounds
+        if self.rounds is None:
+            self.rounds = []
         self.players = players
+        if self.players is None:
+            self.players = []
         self.description = description
         self.file_path = f"{TOURNAMENTS_DIR}{self.name}.json"
 

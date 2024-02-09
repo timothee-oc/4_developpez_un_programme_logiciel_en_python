@@ -14,14 +14,16 @@ class TournamentView:
         tournament_data["place"] = input("Lieu du tournoi: ")
         tournament_data["start_date"] = input("Date de début: ")
         tournament_data["end_date"] = input("Date de fin: ")
-        tournament_data["number_rounds"] = input("Nombre de tours (Laissez vide pour 4 par défaut): ")
+        tournament_data["number_rounds"] = input(
+            "Nombre de tours (Laissez vide pour 4 par défaut): "
+        )
         print()
         return tournament_data
 
     def alert_not_int(self, user_input):
         """
-        Alert the user that his input for the number of rounds when creating a tournament cannot be cast
-        to an integer.
+        Alert the user that his input for the number of rounds when creating a tournament
+        cannot be cast to an integer.
         """
         print(f"Erreur: '{user_input}' n'est pas interprétable comme un entier positif !")
         print("Vous devez entrer un nombre de rounds supérieur ou égal à 1.\n")
@@ -115,30 +117,30 @@ class TournamentView:
         of its rounds displays all the matchs.
         """
         print(f"[LISTE DES ROUNDS DU TOURNOI '{tournament.name}']")
-        for round in tournament.rounds:
+        for round_ in tournament.rounds:
             print(
-                f"\t{round.name}\n"
-                f"\t{round.start_date_time.strftime('Commencé le %d/%m/%Y à %H:%M:%S')}"
+                f"\t{round_.name}\n"
+                f"\t{round_.start_date_time.strftime('Commencé le %d/%m/%Y à %H:%M:%S')}"
             )
-            for match in round.matchs:
+            for match in round_.matchs:
                 print(
                     f"\t\t{match.player1.first_name} {match.player1.last_name} "
                     f"{match.score1} - {match.score2} "
                     f"{match.player2.first_name} {match.player2.last_name}"
                 )
-            if round.end_date_time:
-                print(f"\t{round.end_date_time.strftime('Fini le %d/%m/%Y à %H:%M:%S')}\n")
+            if round_.end_date_time:
+                print(f"\t{round_.end_date_time.strftime('Fini le %d/%m/%Y à %H:%M:%S')}\n")
             else:
                 print("\tEn cours...\n")
         print()
 
-    def display_round_matchs(self, round):
+    def display_round_matchs(self, round_):
         """
         When playing a round, displays a list of the matchs of this round.
         """
-        print(f"{round.name}\n")
+        print(f"{round_.name}\n")
         print("Matchs du round:")
-        for match in round.matchs:
+        for match in round_.matchs:
             print(f"\t{match.player1.first_name} vs {match.player2.first_name}")
         print()
 

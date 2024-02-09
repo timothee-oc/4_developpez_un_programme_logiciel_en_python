@@ -17,19 +17,19 @@ class PlayerView:
         print()
         return player_data
 
-    def alert_invalid_id(self, id):
+    def alert_invalid_id(self, id_):
         """
         Alert the user that the provided ID for player creation is not a sequence of two capital letters
         and 5 digits.
         """
-        print(f"Erreur: l'ID '{id}' n'est pas valide !")
+        print(f"Erreur: l'ID '{id_}' n'est pas valide !")
         print("L'ID doit être composé de deux lettres majuscules suivies de cinq chiffres (par exemple, AB12345)\n")
 
-    def alert_already_existing(self, id):
+    def alert_already_existing(self, id_):
         """
         Tell the user that the player he is trying to create already exist in database.
         """
-        print(f"Un joueur avec l'ID '{id}' existe déjà dans la base de données !\n")
+        print(f"Un joueur avec l'ID '{id_}' existe déjà dans la base de données !\n")
 
     def input_player_id(self):
         """
@@ -38,15 +38,15 @@ class PlayerView:
 
         :return id(string)
         """
-        id = input("Identifiant du joueur: ")
+        id_ = input("Identifiant du joueur: ")
         print()
-        return id
+        return id_
 
-    def alert_not_existing(self, id):
+    def alert_not_existing(self, id_):
         """
         Tell the user that the player he is trying to register does not exist in database.
         """
-        print(f"Aucun joueur ne correspond à l'identifiant {id} !\n")
+        print(f"Aucun joueur ne correspond à l'identifiant {id_} !\n")
 
     def inform_created(self):
         """

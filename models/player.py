@@ -7,21 +7,23 @@ class PlayerModel:
     A player has personnal data, a unique id used to name its file in database,
     a number of points set by default at 0 and a path to its file in database.
     """
-    def __init__(self, first_name, last_name, birth_date, id):
+    def __init__(self, first_name, last_name, birth_date, id_):
         self.first_name = first_name
         self.last_name = last_name
         self.birth_date = birth_date
-        self.id = id
+        self.id_ = id_
         self.points = 0
-        self.file_path = f"{PLAYERS_DIR}{self.id}.json"
+        self.file_path = f"{PLAYERS_DIR}{self.id_}.json"
 
-    def __eq__(self, __value: 'PlayerModel') -> bool:
+    def __eq__(self, other: object) -> bool:
         """
         To compare two players, compare their unique ID.
 
         :return bool
         """
-        return self.id == __value.id
+        if not isinstance(other, PlayerModel):
+            return NotImplemented
+        return self.id_ == other.id_
 
     def serialize(self):
         """
@@ -35,7 +37,7 @@ class PlayerModel:
             "first_name": self.first_name,
             "last_name": self.last_name,
             "birth_date": self.birth_date,
-            "id": self.id
+            "id_": self.id_
         }
 
     def save(self):
@@ -55,5 +57,5 @@ class PlayerModel:
             first_name=data["first_name"],
             last_name=data["last_name"],
             birth_date=data["birth_date"],
-            id=data["id"]
+            id_=data["id_"]
         )

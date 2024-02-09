@@ -29,11 +29,11 @@ class PlayerController:
         """
         players_files = list_data_files(PLAYERS_DIR)
         pattern = re.compile(r'^[A-Z]{2}\d{5}$')
-        if not pattern.match(self.player.id):
-            self.view.alert_invalid_id(self.player.id)
+        if not pattern.match(self.player.id_):
+            self.view.alert_invalid_id(self.player.id_)
             return False
-        if f"{self.player.id}.json" in players_files:
-            self.view.alert_already_existing(self.player.id)
+        if f"{self.player.id_}.json" in players_files:
+            self.view.alert_already_existing(self.player.id_)
             return False
         return True
 
@@ -45,13 +45,13 @@ class PlayerController:
         """
         players_files = list_data_files(PLAYERS_DIR)
         while True:
-            id = self.view.input_player_id()
+            id_ = self.view.input_player_id()
             if f"{id}.json" in players_files:
                 file_path = f"{PLAYERS_DIR}{id}.json"
                 player_data = extract_json(file_path)
                 self.player = PlayerModel.deserialize(player_data)
                 break
-            elif id == "":
+            elif id_ == "":
                 self.player = None
                 break
             else:
@@ -59,11 +59,14 @@ class PlayerController:
 
     def list_all_players(self):
         """
-        Allows to generate a report displaying the full list of players in database ordered alphabetically.
+        Allows to generate a report displaying the full list of players
+        in database ordered alphabetically.
         Also used during registration to inform the user of existing players IDs.
         """
         all_players_files = list_data_files(PLAYERS_DIR)
-        all_players_data = [extract_json(f"{PLAYERS_DIR}{player_file}") for player_file in all_players_files]
+        all_players_data = [
+            extract_json(f"{PLAYERS_DIR}{player_file}") for player_file in all_players_files
+        ]
         all_players = [PlayerModel.deserialize(player_data) for player_data in all_players_data]
         all_players_ordered = sorted(all_players, key=lambda p: p.last_name)
         self.view.display_all_players(all_players_ordered)
